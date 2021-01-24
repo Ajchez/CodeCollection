@@ -79,6 +79,32 @@ namespace Matrix
             return retObj;
         }
 
+        NumericMatrix operator*(const NumericMatrix& obj)
+        {
+            //Create a new matrix
+            //(m x n) * (n x p) = (m x p)
+            NumericMatrix retObj{nRows, obj.nCols};
+
+            //Loop over the rows
+            for (size_type row=0; row<nRows; ++row)
+            {
+                //Loop over the columns
+                for (size_type col=0; col<obj.nCols; ++col)
+                {
+
+                    //Loop over the common dimension
+                    for (size_type k=0; k<nCols; ++k)
+                    {
+                        size_type idx1 = GetDataIndex(row,k);
+                        size_type idx2 = obj.GetDataIndex(k,col);
+                        retObj(row,col) += matrix_data[idx1] * obj.matrix_data[idx2];
+                    }
+                }
+            }
+
+            return retObj;
+        }
+
         NumericMatrix Scale(T val)
         {
             //Return a new matrix so we can retain the original
